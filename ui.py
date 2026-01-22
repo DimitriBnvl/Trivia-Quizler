@@ -10,10 +10,12 @@ class QuizInterface:
 
         self.quiz = quiz_brain
 
+        #Window
         self.window = Tk()
         self.window.title("Quizler")
         self.window.config(bg=THEME_COLOR, padx=20, pady=20)
 
+        #Background
         self.canvas = Canvas(width=300, height=250, bg="white")
         self.canvas.grid(row=1, column=0, columnspan=2, pady=50)
         self.question_text = self.canvas.create_text(
@@ -26,9 +28,11 @@ class QuizInterface:
             width=280
         )
 
+        #Score Label
         self.text = Label(text="Score: 0", font=FONT, bg=THEME_COLOR)
         self.text.grid(row=0,column=1)
 
+        #True and False Buttons
         true_icon = PhotoImage(file="images/true.png")
         false_icon = PhotoImage(file="images/false.png")
 
@@ -45,9 +49,12 @@ class QuizInterface:
     def get_next_question(self):
         self.canvas.config(bg="white")
 
+        #New Question
         if self.quiz.still_has_questions():
             q_text = self.quiz.next_question()
             self.canvas.itemconfig(self.question_text, text=q_text)
+
+        #End of Quiz
         else:
             self.true.config(state=DISABLED)
             self.false.config(state=DISABLED)
@@ -55,6 +62,7 @@ class QuizInterface:
                                    text=f"You have reached the end of the quiz!"
                                         f"\n\nYour final score was: {self.quiz.score}/{self.quiz.question_number}")
 
+    #Determines if the user is right or wrong.
     def answered_true(self):
         is_right = self.quiz.check_answer("True")
         self.give_feedback(is_right)
@@ -63,6 +71,7 @@ class QuizInterface:
         is_right = self.quiz.check_answer("False")
         self.give_feedback(is_right)
 
+    #Changes background and score depending on answer.
     def give_feedback(self, is_right):
         if is_right:
             self.canvas.config(bg="green")
